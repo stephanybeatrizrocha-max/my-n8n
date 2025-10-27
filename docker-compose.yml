@@ -1,15 +1,23 @@
+version: '3.7'
+
 services:
   n8n:
-    # IMAGEM ANTIGA (REMOVA OU COMENTE ESTA LINHA):
-    # image: n8nio/n8n:1.111.0
+    # 1. FIX: Use a imagem que você acabou de construir.
+    #    NÃO USE "build: ."
+    image: n8n-com-ffmpeg:latest
     
-    # NOVA INSTRUÇÃO (ADICIONE ESTA LINHA):
-    build: .
-    
-    # ... (o resto da sua configuração continua igual)
+    restart: always
     ports:
       - "5678:5678"
-    volumes:
-      - n8n_data:/home/node/.n8n
     environment:
-      - DB_TYPE=postgresdb
+      # Adicione suas variáveis de ambiente (fuso horário, banco de dados, etc.)
+      - GENERIC_TIMEZONE=America/Sao_Paulo
+    volumes:
+      # Esta linha usa o volume "n8n_data"
+      - n8n_data:/home/node/.n8n
+    
+# 2. FIX: Adicione este bloco no final (fora de "services:")
+#    para "declarar" o volume.
+volumes:
+  n8n_data:
+    # Deixar em branco usa o driver padrão (local), que está correto.
